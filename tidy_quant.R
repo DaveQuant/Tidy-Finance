@@ -5,7 +5,7 @@ p_load(tidyverse, tidyquant)
 
 prices <- tq_get("AAPL",
                  get = "stock.prices",
-                 from = "2009-01-01",
+                 from = "2014-01-01",
                  to = "2024-12-31")
 
 prices |>
@@ -36,13 +36,30 @@ returns |>
     title = "Distribution of daily Apple stock returns in percent"
   )
 
-  returns |> 
-    mutate(ret = ret * 100) |>
-    summarize(across(
-      ret,
-      list(daily_mean = mean,
-      daily_sd = sd,
-      daily_min = min,
-      daily_max = max
+returns |> 
+  mutate(ret = ret * 100) |>
+  summarize(across(
+    ret,
+    list(daily_mean = mean,
+    daily_sd = sd,
+    daily_min = min,
+    daily_max = max
+)
+  )) 
+  
+returns |> 
+  mutate(ret = ret * 100) |>
+  group_by(year = year(date)) |>
+  summarize(across(
+    ret,
+    list(daily_mean = mean,
+    daily_sd = sd,
+    daily_min = min,
+    daily_max = max
   )
-    ))
+  )) |> print(n = Inf)
+
+ticker <- tq_index("DOW")
+ticker
+
+tq_exchange("NASDAQ")
