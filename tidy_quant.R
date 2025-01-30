@@ -62,4 +62,22 @@ returns |>
 ticker <- tq_index("DOW")
 ticker
 
-tq_exchange("NASDAQ")
+index_prices <- tq_get(ticker,
+  get = "stock.prices",
+  from = "2014-01-01",
+  to = "2024-12-31")
+
+index_prices |> 
+  ggplot(aes(
+    x = date,
+    y = adjusted,
+    color = symbol
+  )) + 
+  geom_line() +
+  labs(
+    x = NULL,
+    y = NULL,
+    title = "Stock prices of DOW index constituents"
+  ) +
+  theme(legend.position = "none")
+
