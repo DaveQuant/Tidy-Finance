@@ -81,3 +81,23 @@ index_prices |>
   ) +
   theme(legend.position = "none")
 
+all_returns <- index_prices |>
+  group_by(symbol) |>
+  mutate(ret = adjusted / lag(adjusted) - 1) |>
+  select(symbol, date, ret) |>
+  drop_na(ret)
+
+all_returns |>
+  mutate(ret = ret * 100) |>
+  group_by(symbol) |>
+  summarize(across(
+    ret,
+    list(
+      daily_mean = mean,
+      daily_sd = sd,
+      daily_min = min,
+      daily_max = max
+    ),
+    .names = "{.fn}"
+  )) |>
+  print(n = Inf)
