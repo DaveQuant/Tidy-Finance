@@ -1,19 +1,27 @@
 rm(list = ls())
 
 library(pacman)
-p_load(tidyverse, tidyquant)
+p_load(tidyverse, tidyquant, IBrokers)
 
 prices <- tq_get("AAPL",
                   get = "stock.prices",
                   from = "2014-01-01",
-                  to = "2025-01-29") 
+                  to = "2025-01-30")
 
 prices |> 
-  arrange(date) |> 
   ggplot(aes(x = date, y = adjusted)) +
-  geom_line()+
+  geom_line() +
   labs(
     x = NULL,
     y = NULL,
-    title = "Apple stock prices between beginning of 2014 and end of 2024"
+    title = "mi distribucion"
   )
+
+returns <- prices |> 
+  arrange(date) |>
+  mutate(ret = adjusted / lag(adjusted) -1) |>
+  select(date, ret) |>
+  drop_na()
+
+returns |>
+  mutate(ret = ret * 100) |>
