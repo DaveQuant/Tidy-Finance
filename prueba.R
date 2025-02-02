@@ -52,4 +52,5 @@ returns |>
 
 ticker <- tq_index("DOW")
 
+1/8
 
