@@ -12,6 +12,7 @@ index_prices <- tq_get(
                       )
 
 # we obtain only the series who are complete
+
 index_prices <- index_prices |>
   group_by(symbol) |>
   mutate( n = n()) |>
@@ -27,7 +28,7 @@ returns <- index_prices |>
   drop_na() |>
   select(-price)
 
-returns_matrix <- returns |>
+return_matrix <- returns |>
   pivot_wider(
     names_from = symbol,
     values_from = ret
